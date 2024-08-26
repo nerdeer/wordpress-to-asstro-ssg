@@ -46,8 +46,8 @@ const sanitizeWPData = ( item = {}, options = {
   processStringDataValueFn: _.noop
 }) => {
   if ( _.isString( item ) ) {
-    options.processStringDataValueFn( item );
-    return item;
+    let newItem = options.processStringDataValueFn( item );
+    return _.isString(newItem) ? newItem : item;
   } else if ( _.isNumber( item ) ) {
     // nothing to do
     return item;

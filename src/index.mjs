@@ -4,11 +4,11 @@ import {definePosts} from "./wp/posts.mjs";
 
 // WP exports
 
-export * from "../bin/genContentFromWP.cjs";
-export * from "./wp/links.mjs";
-export * from "./wp/pages.mjs";
-export * from "./wp/posts.mjs";
-export * from "./wp/sitemap.js";
+export { generateContentFromWP } from "../bin/genContentFromWP.cjs";
+export { WP_EXPORT_LINKS_SCHEMA } from "./wp/links.mjs";
+export { WP_EXPORT_PAGES_SCHEMA, definePages } from "./wp/pages.mjs";
+export { WP_EXPORT_POSTS_SCHEMA, definePosts } from "./wp/posts.mjs";
+export { getAstroSitemap } from "./wp/sitemap.js";
 
 export const wpCollections = {
   definePosts,

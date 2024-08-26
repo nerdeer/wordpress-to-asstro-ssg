@@ -1,6 +1,7 @@
 import _ from "lodash";
+import {getCollection} from "astro:content";
 
-const getChildren = ( parentId, collection = allPages ) => {
+const getChildren = ( parentId, collection = [] ) => {
   if ( !parentId || parentId === 0 ) {
     return [];
   }
@@ -15,7 +16,7 @@ export const recursiveMapParentChild = ( source, allPagesMapped = {} ) => {
     let itemId =  _.has( item.data, 'id' ) ? item.data.id : 0;
     let parentId =  _.has( item.data, 'parent' ) ? item.data.parent : 0;
     let isRootItem = ( parentId === 0 );
-    let children = getChildren( itemId );
+    let children = getChildren( itemId, source );
     recursiveMapParentChild( children, allPagesMapped );
     item.isRootItem = isRootItem;
     item.children =

@@ -1,0 +1,27 @@
+{
+  "name": "wordpress-to-asstro-ssg",
+  "version": "1.0.0",
+  "description": "export wordpress content into an Astro SSG project. ( via NPX, Node &amp; YARGS )",
+  "main": "src/index.mjs",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "astro": "^4.14.5"
+  },
+  "files": [
+    "bin/*",
+    "src/*"
+  ],
+  "devDependencies": {
+    "axios": "^1.7.5",
+    "lodash": "^4.17.21",
+    "uid": "^2.0.2",
+    "wpapi": "git+https://github.com/hajamie/node-wpapi.git",
+    "fs-extra": "^11.2.0",
+    "html-entities": "^2.5.2"
+  }
+}

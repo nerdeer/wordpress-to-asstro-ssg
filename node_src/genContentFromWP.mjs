@@ -53,8 +53,7 @@ const sanitizeWPData = ( item = {}, options = {
     return item;
   } else if ( _.isArray( item ) ) {
     let arry = [];
-    for( let childKey of Object.keys( item ) ) {
-      let child = item[childKey];
+    for( let child of item ) {
       child = sanitizeWPData( child, options );
     }
     return arry;
@@ -63,6 +62,7 @@ const sanitizeWPData = ( item = {}, options = {
     for( let childKey of Object.keys( item ) ) {
       let child = item[childKey];
       child = sanitizeWPData( child, options );
+      obj[ childKey ] = child;
     }
     return obj;
   }

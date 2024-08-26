@@ -4,6 +4,7 @@ import {definePosts} from "./wp/posts.mjs";
 
 // WP exports
 
+export * from "../bin/genContentFromWP.cjs";
 export * from "./wp/links.mjs";
 export * from "./wp/pages.mjs";
 export * from "./wp/posts.mjs";

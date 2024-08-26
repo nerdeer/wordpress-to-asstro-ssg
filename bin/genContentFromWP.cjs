@@ -67,7 +67,7 @@ const sanitizeWPData = ( item = {}, options = {
   return item;
 }
 
-export const generate = async (options = {
+export const generateContentFromWP = async (options = {
   processStringDataValueFn: _.noop,
   srcContentFolder: `./src/content`,
   publicAssetsFolder: `./public/wp`,

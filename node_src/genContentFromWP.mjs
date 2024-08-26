@@ -53,13 +53,15 @@ const sanitizeWPData = ( item = {}, options = {
     return item;
   } else if ( _.isArray( item ) ) {
     let arry = [];
-    for( let child of item ) {
+    for( let childKey of Object.keys( item ) ) {
+      let child = item[childKey];
       child = sanitizeWPData( child, options );
     }
     return arry;
   } else if ( _.isObject( item ) ) {
     let obj = {}
-    for( let child of item ) {
+    for( let childKey of Object.keys( item ) ) {
+      let child = item[childKey];
       child = sanitizeWPData( child, options );
     }
     return obj;

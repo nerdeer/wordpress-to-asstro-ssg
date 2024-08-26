@@ -1,5 +1,6 @@
 
 import {defineCollection, z} from 'astro:content';
+import {WP_EXPORT_LINKS_SCHEMA} from "./links.mjs";
 
 export const WP_EXPORT_POSTS_SCHEMA = z.object({
   "id": z.number(),

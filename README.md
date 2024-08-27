@@ -1,6 +1,7 @@
 # wordpress-to-asstro-ssg
 
 [NPM](https://www.npmjs.com/package/wordpress-to-asstro-ssg)
+[Git](https://github.com/nerdeer/wordpress-to-asstro-ssg)
 
 export WordPress content into an Astro SSG project.
 

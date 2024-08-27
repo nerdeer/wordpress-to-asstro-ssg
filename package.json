@@ -1,6 +1,6 @@
 {
   "name": "wordpress-to-asstro-ssg",
-  "version": "2.4.6",
+  "version": "2.4.7",
   "description": "export wordpress content into an Astro SSG project.",
   "main": "src/index.mjs",
   "type": "module",

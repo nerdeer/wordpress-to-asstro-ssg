@@ -11,7 +11,7 @@ There are two parts to this project.
 
 ## PART 1: The data collections. 
 
-In your Astro content config, `./src/conetnt/config.ts`, we need to tell Astro what the WordPress data schemas are.
+In your Astro content config, `./src/content/config.ts`, we need to tell Astro what the WordPress data schemas are.
 
 To do this, provide the used WordPress schemas ( ex: Posts and Pages ) definitions to this config file. 
 

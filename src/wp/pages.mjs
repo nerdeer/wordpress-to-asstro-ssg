@@ -32,7 +32,9 @@ export const WP_EXPORT_PAGES_SCHEMA = z.object({
   "comment_status": z.string(),
   "ping_status": z.string(),
   "template": z.string(),
-  "meta": z.array(z.any()),
+  "meta": z.object({
+    "footnotes": z.string()
+  }),
   "_links": WP_EXPORT_LINKS_SCHEMA
 })
 

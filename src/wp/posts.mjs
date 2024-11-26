@@ -33,7 +33,9 @@ export const WP_EXPORT_POSTS_SCHEMA = z.object({
   "sticky": z.boolean(),
   "template": z.string(),
   "format": z.string(),
-  "meta": z.array(z.any()),
+  "meta": z.object({
+    "footnotes": z.string()
+  }),
   "categories": z.array(z.number()),
   "tags": z.array(z.any()),
   "_links": WP_EXPORT_LINKS_SCHEMA

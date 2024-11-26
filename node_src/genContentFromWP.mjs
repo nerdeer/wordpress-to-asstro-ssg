@@ -153,6 +153,9 @@ export const generateContentFromWP = async (options = {
   if ( options.exportMedia ) {
     // save all media files
     for ( let data of media.data ) {
+      if (! ( _.has( data, 'media_details' ) && _.has( data.media_details, 'sizes' ) ) ) {
+        continue;
+      }
       for ( let size of Object.keys( data.media_details.sizes ) ) {
         let item = data.media_details.sizes[size];
         let fileName = item.file;

@@ -153,13 +153,11 @@ export const generateContentFromWP = async (options = {
   if ( options.exportMedia ) {
     // save all media files
     for ( let data of media.data ) {
-      if (! ( _.has( data, 'media_details' ) && _.has( data.media_details, 'sizes' ) ) ) {
+      if (! _.has( data, 'media_details' ) ) {
         continue;
-      }
-      for ( let size of Object.keys( data.media_details.sizes ) ) {
-        let item = data.media_details.sizes[size];
-        let fileName = item.file;
-        let nameSplit = item.source_url.split("wp-content/")[1].split("/");
+      } else if (! _.has( data.media_details, 'sizes' ) ) {
+        let fileName = data.source_url.split("/").pop();
+        let nameSplit = data.source_url.split("wp-content/")[1].split("/");
         let publicFolderName = options.publicAssetsFolder;
         if ( publicFolderName.charAt( publicFolderName.length-1 ) !== "/" ) {
           publicFolderName = `${publicFolderName}/`
@@ -169,8 +167,24 @@ export const generateContentFromWP = async (options = {
         }
         fileName = nameSplit[0];
         fse.mkdirpSync( publicFolderName, {} );
-        await downloadFile( item.source_url , `${publicFolderName}${fileName}`)
+        await downloadFile( data.source_url , `${publicFolderName}${fileName}`)
+      } else {
+        for (let size of Object.keys(data.media_details.sizes)) {
+          let item = data.media_details.sizes[size];
+          let fileName = item.file;
+          let nameSplit = item.source_url.split("wp-content/")[1].split("/");
+          let publicFolderName = options.publicAssetsFolder;
+          if (publicFolderName.charAt(publicFolderName.length - 1) !== "/") {
+            publicFolderName = `${publicFolderName}/`
+          }
+          while (nameSplit.length > 1) {
+            publicFolderName = `${publicFolderName}${nameSplit.shift()}/`;
+          }
+          fileName = nameSplit[0];
+          fse.mkdirpSync(publicFolderName, {});
+          await downloadFile(item.source_url, `${publicFolderName}${fileName}`)
 
+        }
       }
     }
   }

@@ -13,21 +13,21 @@ const finished = promisify(stream.finished);
 
 async function getAll( wpAction, pageNum=1 ) {
   return wpAction.page(pageNum)
-    .then(function( response ) {
-      let wpTotal = response.headers['x-wp-total'];
-      let wpTotalPages = response.headers['x-wp-totalpages'];
-      if ( !wpTotal || !wpTotalPages || ( pageNum >= +wpTotalPages ) ) {
-        return response;
-      }
-      // Request the next page and return both responses as one collection
-      return Promise.all([
-        response,
-        getAll( wpAction, pageNum + 1 )
-      ]).then(( responses ) => {
-        responses[0].data = responses[0].data.concat( responses[1].data );
-        return responses[0]
+      .then(function( response ) {
+        let wpTotal = response.headers['x-wp-total'];
+        let wpTotalPages = response.headers['x-wp-totalpages'];
+        if ( !wpTotal || !wpTotalPages || ( pageNum >= +wpTotalPages ) ) {
+          return response;
+        }
+        // Request the next page and return both responses as one collection
+        return Promise.all([
+          response,
+          getAll( wpAction, pageNum + 1 )
+        ]).then(( responses ) => {
+          responses[0].data = responses[0].data.concat( responses[1].data );
+          return responses[0]
+        });
       });
-    });
 }
 
 export async function downloadFile(fileUrl, outputLocationPath) {
@@ -156,38 +156,54 @@ export const generateContentFromWP = async (options = {
       if (! _.has( data, 'media_details' ) ) {
         continue;
       } else if (! _.has( data.media_details, 'sizes' ) ) {
-        let fileName = data.source_url.split("/").pop();
-        let nameSplit = data.source_url.split("wp-content/")[1].split("/");
-        let publicFolderName = options.publicAssetsFolder;
-        if ( publicFolderName.charAt( publicFolderName.length-1 ) !== "/" ) {
-          publicFolderName = `${publicFolderName}/`
+        try{
+          await fetchAsset( options, data )
+        } catch ( e ) {
+          console.log( e )
         }
-        while ( nameSplit.length > 1 ) {
-          publicFolderName = `${publicFolderName}${nameSplit.shift()}/`;
-        }
-        fileName = nameSplit[0];
-        fse.mkdirpSync( publicFolderName, {} );
-        await downloadFile( data.source_url , `${publicFolderName}${fileName}`)
       } else {
         for (let size of Object.keys(data.media_details.sizes)) {
-          let item = data.media_details.sizes[size];
-          let fileName = item.file;
-          let nameSplit = item.source_url.split("wp-content/")[1].split("/");
-          let publicFolderName = options.publicAssetsFolder;
-          if (publicFolderName.charAt(publicFolderName.length - 1) !== "/") {
-            publicFolderName = `${publicFolderName}/`
+          try{
+            await fetchSizedAsset( options, data, size )
+          } catch ( e ) {
+            console.log( e )
           }
-          while (nameSplit.length > 1) {
-            publicFolderName = `${publicFolderName}${nameSplit.shift()}/`;
-          }
-          fileName = nameSplit[0];
-          fse.mkdirpSync(publicFolderName, {});
-          await downloadFile(item.source_url, `${publicFolderName}${fileName}`)
-
         }
       }
     }
   }
 
   return cache;
+}
+
+async function fetchAsset(options, data) {
+  let fileName = data.source_url.split("/").pop();
+  let nameSplit = data.source_url.split("wp-content/")[1].split("/");
+  let publicFolderName = options.publicAssetsFolder;
+  if ( publicFolderName.charAt( publicFolderName.length-1 ) !== "/" ) {
+    publicFolderName = `${publicFolderName}/`
+  }
+  while ( nameSplit.length > 1 ) {
+    publicFolderName = `${publicFolderName}${nameSplit.shift()}/`;
+  }
+  fileName = nameSplit[0];
+  fse.mkdirpSync( publicFolderName, {} );
+  await downloadFile( data.source_url , `${publicFolderName}${fileName}`)
+}
+
+async function fetchSizedAsset(options, data, size) {
+  let item = data.media_details.sizes[size];
+  let fileName = item.file;
+  let nameSplit = item.source_url.split("wp-content/")[1].split("/");
+  let publicFolderName = options.publicAssetsFolder;
+  if (publicFolderName.charAt(publicFolderName.length - 1) !== "/") {
+    publicFolderName = `${publicFolderName}/`
+  }
+  while (nameSplit.length > 1) {
+    publicFolderName = `${publicFolderName}${nameSplit.shift()}/`;
+  }
+  fileName = nameSplit[0];
+  fse.mkdirpSync(publicFolderName, {});
+  await downloadFile(item.source_url, `${publicFolderName}${fileName}`)
+
 }

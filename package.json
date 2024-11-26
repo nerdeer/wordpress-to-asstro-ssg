@@ -1,5 +1,5 @@
 {
-  "name": "@nerdeer/wordpress-to-asstro-ssg",
+  "name": "wordpress-to-asstro-ssg",
   "version": "2.5.1",
   "description": "export wordpress content into an Astro SSG project.",
   "main": "src/index.mjs",

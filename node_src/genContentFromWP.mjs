@@ -158,6 +158,9 @@ export const generateContentFromWP = async (options = {
         let fileName = item.file;
         let nameSplit = item.source_url.split("wp-content/")[1].split("/");
         let publicFolderName = options.publicAssetsFolder;
+        if ( publicFolderName.charAr( publicFolderName.length-1 ) !== "/" ) {
+          publicFolderName = `${publicFolderName}/`
+        }
         while ( nameSplit.length > 1 ) {
           publicFolderName = `${publicFolderName}${nameSplit.shift()}/`;
         }
